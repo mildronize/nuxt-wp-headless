@@ -14,7 +14,9 @@ import config from "../../config";
 import { DateTime } from "luxon";
 
 export default {
-  async asyncData({ params }) {
+  async asyncData({ params, error, payload }) {
+    if (payload) return { post: payload };
+
     let { data } = await axios.get(
       config.baseUrl + `posts&slug=${params.slug}`
     );

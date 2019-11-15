@@ -1,3 +1,7 @@
+import config from './config';
+import api from './api';
+
+const generateRoutes = ['/about'];
 
 export default {
   mode: 'universal',
@@ -5,7 +9,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'My Next site',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -40,7 +44,7 @@ export default {
   */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    ['bootstrap-vue/nuxt' , { css: false }],
+    ['bootstrap-vue/nuxt', { css: false }],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
@@ -58,7 +62,25 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
+    }
+  },
+  generate: {
+    routes: async () => {
+      let routePosts = [];
+      try {
+        let { data } = await api.getPosts();
+        routePosts = data.map((post) => (
+          { 
+            route: `/${config.post_prefix}/${post.slug}`,
+            payload: post
+          }
+        ));
+      } catch (e) {
+        console.log(e);
+      }
+      return [...generateRoutes, ...routePosts];
     }
   }
 }
+
