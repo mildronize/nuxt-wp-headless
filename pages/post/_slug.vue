@@ -1,9 +1,9 @@
 <template>
   <div>
     <article>
-      <h1 class="post-title">{{post.title.rendered}}</h1>
+      <h1 v-html="post.title.rendered" class="post-title" />
       <p class="post-date">{{formatDateTime(post.date)}}</p>
-      <div v-html="post.content.rendered"></div>
+      <div v-html="post.content.rendered" />
     </article>
   </div>
 </template>
