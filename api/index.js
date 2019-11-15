@@ -82,6 +82,7 @@ export default {
             totalPages: response.headers["x-wp-totalpages"],
             data: data.map(item => ({
               id: item.id,
+              date: item.date,
               title: item.title.rendered,
               content: item.content.rendered,
               excerpt: item.excerpt.rendered,
