@@ -1,27 +1,24 @@
 <template>
   <div>
     <article>
-      <h1 v-html="post.title.rendered" class="post-title" />
+      <h1 v-html="post.title" class="post-title" />
       <p class="post-date">{{formatDateTime(post.date)}}</p>
-      <div v-html="post.content.rendered" />
+      <div v-html="post.content" />
     </article>
   </div>
 </template>
 <script>
 
-import axios from "axios";
+import api from "../../api";
 import config from "../../config";
 import { DateTime } from "luxon";
 
 export default {
   async asyncData({ params, error, payload }) {
     if (payload) return { post: payload };
-
-    let { data } = await axios.get(
-      config.baseUrl + `posts&slug=${params.slug}`
-    );
+    let data = await api.getPost(params.slug);
     return {
-      post: data[0]
+      post: data
     };
   },
   head() {
