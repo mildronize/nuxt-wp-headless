@@ -1,8 +1,9 @@
 import request from "axios";
-import config from "../api/config";
+import config from "../config";
 
 export default {
   baseUrl: config.baseUrl,
+  per_page: config.per_page ? config.per_page : 10,
 
   /**
    * Return a single page
@@ -73,7 +74,7 @@ export default {
     console.log("Request to posts");
     return new Promise((resolve, reject) => {
       request.defaults.baseURL = this.baseUrl;
-      request.get(`posts`).then(response => {
+      request.get(`posts&per_page=${this.per_page}`).then(response => {
         const data = [...response.data];
         if (response.status === 200 && response.data.length > 0) {
           const filtered = {
