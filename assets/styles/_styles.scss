@@ -298,3 +298,11 @@ hr::before {
 .post-ending-hr{
   margin-bottom: 12rem;
 }
+
+// page transition
+.page-enter-active, .page-leave-active {
+  transition: opacity .1s
+}
+.page-enter, .page-leave-active {
+  opacity: 0
+}
