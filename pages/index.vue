@@ -3,16 +3,19 @@
     <h2>Posts</h2>
     <ul>
       <li v-for="post in posts">
-        <span v-html="post.title">{</span>
+       <NuxtLink :to="slugToUrl(post.slug)">
+        <span v-html="post.title"></span>
+       </NuxtLink>
       </li>
     </ul>
-    <NuxtLink to="/">Home</NuxtLink>
   </div>
 </template>
 
 <script>
+
 import api from "../api";
 import { mapMutations, mapGetters, mapActions } from "vuex";
+import config from '../config';
 
 export default {
   async asyncData({ params }) {
@@ -22,8 +25,13 @@ export default {
     return {
       posts: data
     };
+  },
+  methods: {
+    slugToUrl: (slug) => ( `/${config.post_prefix}/${slug}` )
   }
 };
+
+
 </script>
 
 <style>
