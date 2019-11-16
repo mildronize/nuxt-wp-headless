@@ -2,7 +2,7 @@
   <div>
     <h2>Posts</h2>
     <ul>
-      <li v-for="post in posts">
+     <li v-for="post in posts">
        <NuxtLink :to="slugToUrl(post.slug)">
         <span v-html="post.title"></span>
        </NuxtLink>
@@ -12,26 +12,37 @@
 </template>
 
 <script>
-
-import api from "../api";
+import api from "~/common/api";
 import { mapMutations, mapGetters, mapActions } from "vuex";
-import config from '../config';
+import config from "~/common/config";
 
 export default {
-  async asyncData({ params }) {
-    // We can use async/await ES6 feature
-    let { data } = await api.getPosts();
+  // async asyncData({ params }) {
+  //   // We can use async/await ES6 feature
+  //   // let { data } = await api.getPosts();
 
-    return {
-      posts: data
-    };
-  },
+  //   return {
+  //     posts: "data"
+  //   };
+  // },
   methods: {
-    slugToUrl: (slug) => ( `/${config.post_prefix}/${slug}` )
+    slugToUrl: slug => `/${config.post_prefix}/${slug}`
+  },
+  fetch({ store }) {
+    if(store.state.posts.length === 0)
+      return store.dispatch('FETCH_POSTS');
+    return;
+  },
+  mounted() {
+    this.posts = this.$store.state.posts;
+    // ...mapGetters([
+    //   'posts'
+    // ])
+  },
+  data() {
+   return { posts: []}
   }
 };
-
-
 </script>
 
 <style>

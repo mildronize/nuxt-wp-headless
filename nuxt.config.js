@@ -1,5 +1,5 @@
-import config from './config';
-import api from './api';
+import config from './common/config';
+import api from './common/api';
 
 const generateRoutes = ['/about'];
 
@@ -22,7 +22,9 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: false,
+  loading: {
+    color: '#0057A3'
+  },
   /*
   ** Global CSS
   */
@@ -47,7 +49,7 @@ export default {
     ['bootstrap-vue/nuxt', { css: false }],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
+    // '@nuxtjs/pwa',
   ],
   /*
   ** Axios module configuration
@@ -63,13 +65,14 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-    }
+    },
+    // analyze: true,
   },
   generate: {
     routes: async () => {
       let routePosts = [];
       try {
-        let { data } = await api.getPosts();
+        let { data } = await api.getAllPosts();
         routePosts = data.map((post) => (
           { 
             route: `/${config.post_prefix}/${post.slug}`,

@@ -1,9 +1,10 @@
 import request from "axios";
-import config from "../config";
+import config from "./config";
 
 export default {
   baseUrl: config.baseUrl,
   per_page: config.per_page ? config.per_page : 10,
+  per_page_all: 100,
 
   /**
    * Return a single page
@@ -41,6 +42,7 @@ export default {
    * @return Promise Filtered response
    */
   getPost(slug) {
+    console.log(`Request to post slug: ${slug}`);
     return new Promise((resolve, reject) => {
       request.defaults.baseURL = this.baseUrl;
       request.get(`posts&slug=${slug}`).then(response => {
@@ -84,6 +86,38 @@ export default {
               id: item.id,
               date: item.date,
               title: item.title.rendered,
+              excerpt: item.excerpt.rendered,
+              slug: item.slug
+            }))
+          };
+          resolve(filtered);
+        } else {
+          reject(response);
+        }
+      });
+    });
+  },
+
+
+  /**
+   * Return all posts in Wordpress
+   * @param  string slug Post slug (e.g. 'hello-world')
+   * @return Promise Filtered response
+   */
+  getAllPosts() {
+    console.log("Request to posts");
+    return new Promise((resolve, reject) => {
+      request.defaults.baseURL = this.baseUrl;
+      request.get(`posts&per_page=${this.per_page_all}`).then(response => {
+        const data = [...response.data];
+        if (response.status === 200 && response.data.length > 0) {
+          const filtered = {
+            total: response.headers["x-wp-total"],
+            totalPages: response.headers["x-wp-totalpages"],
+            data: data.map(item => ({
+              id: item.id,
+              date: item.date,
+              title: item.title.rendered,
               content: item.content.rendered,
               excerpt: item.excerpt.rendered,
               slug: item.slug
@@ -96,6 +130,8 @@ export default {
       });
     });
   },
+  
+
   /**
    * Returns category data and all posts under it (paginated)
    * @param  string slug Category slug (e.g. 'news')

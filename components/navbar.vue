@@ -1,5 +1,4 @@
 <template>
-  <navbar>
     <b-navbar toggleable="lg" variant="faded" type="light">
       <div class="page-container">
         <b-navbar-brand>
@@ -21,5 +20,4 @@
         </b-collapse>
       </div>
     </b-navbar>
-  </navbar>
 </template>

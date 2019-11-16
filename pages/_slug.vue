@@ -9,8 +9,7 @@
 <script>
 
 import axios from "axios";
-import config from "../config";
-import { DateTime } from "luxon";
+import config from "~/common/config";
 
 export default {
   async asyncData({ params }) {
@@ -31,13 +30,7 @@ export default {
         }
       ]
     };
-  },
-  mounted() {
-    // this.$store.dispatch('getPosts')
-  },
-  methods: {
-    formatDateTime: datetime =>
-      DateTime.fromISO(datetime).toFormat("MMMM d, yyyy")
   }
+
 };
 </script>

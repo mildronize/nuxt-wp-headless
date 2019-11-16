@@ -3,27 +3,26 @@
     <article>
       <h1 v-html="post.title" class="post-title" />
       <p class="post-date">{{formatDateTime(post.date)}}</p>
-      <div v-html="post.content" />
+        <div v-html="post.content" />
     </article>
   </div>
 </template>
 <script>
-
-import api from "../../api";
-import config from "../../config";
-import { DateTime } from "luxon";
+import api from "~/common/api";
+import config from "~/common/config";
+import { parseISO, format } from "date-fns";
 
 export default {
   async asyncData({ params, error, payload }) {
-    if (payload) return { post: payload };
-    let data = await api.getPost(params.slug);
+    if (payload) return { post: payload }
+    let  data = await api.getPost(params.slug);
     return {
       post: data
     };
   },
   head() {
     return {
-      title: `Nuxt WordPress | ${this.post.title.rendered}`,
+      title: `${this.post.title.rendered} | Mildronize`,
       meta: [
         {
           name: "description",
@@ -32,12 +31,8 @@ export default {
       ]
     };
   },
-  mounted() {
-    // this.$store.dispatch('getPosts')
-  },
   methods: {
-    formatDateTime: datetime =>
-      DateTime.fromISO(datetime).toFormat("MMMM d, yyyy")
+    formatDateTime: datetime => format(parseISO(datetime), "MMMM d, yyyy")
   }
 };
 </script>
